@@ -44,7 +44,7 @@ export async function POST(request: Request) {
         guestCount: parseInt(String(guestCount)),
         totalPrice,
         depositAmount: listing.depositAmount,
-        status: "confirmed", // instant confirm for demo
+        status: "pending",
       },
     })
 

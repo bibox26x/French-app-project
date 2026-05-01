@@ -31,9 +31,9 @@ Response 500: `{ "error": { "code": "INTERNAL_ERROR", "message": "Une erreur est
 ### POST /api/auth/register
 Auth: none
 Body: `{ firstName: string, lastName: string, email: string, password: string }`
-Response 201: `{ "user": { ... } }`
-Response 400: `{ "error": { "code": "BAD_REQUEST", "message": string } }`
-Response 409: `{ "error": { "code": "EMAIL_TAKEN", "message": string } }`
+Response 201: `{ "user": { "id": string, "email": string, "firstName": string, "lastName": string, "role": string, "isVerifiedStudent": boolean, "createdAt": ISODate } }`
+Response 400: `{ "error": { "code": "BAD_REQUEST" | "INVALID_EMAIL" | "PASSWORD_TOO_SHORT", "message": string } }`
+Response 409: `{ "error": { "code": "EMAIL_TAKEN", "message": "Un compte existe déjà avec cette adresse." } }`
 
 ---
 
@@ -61,7 +61,15 @@ Response 200: `{ "booking": { "id": string, "status": string, "updatedAt": ISODa
 
 ### GET /api/listings
 Auth: none
-Response 200: `{ "listings": [{ "id": string, "title": string, ... }] }`
+Query params: none. Filtering is done client-side by the web app.
+Response 200: `{ "listings": [{ "id": string, "title": string, "city": string, "pricePerNight": number, "maxGuests": number, "bedrooms": number, "propertyType": string, "photos": string[], "status": string, "createdAt": ISODate, "host": { "firstName": string, "lastName": string } }] }`
+
+---
+
+### GET /api/listings/[id]
+Auth: none
+Response 200: `{ "listing": { "id": string, "title": string, "description": string, "propertyType": string, "addressLine": string, "city": string, "latitude": number, "longitude": number, "maxGuests": number, "bedrooms": number, "pricePerNight": number, "weekendPrice": number, "depositAmount": number, "houseRules": string, "amenities": string, "photos": string, "status": string, "createdAt": ISODate, "updatedAt": ISODate, "host": { "firstName": string, "lastName": string } } }`
+Response 404: `{ "error": { "code": "NOT_FOUND", "message": "Annonce introuvable." } }`
 
 ---
 
