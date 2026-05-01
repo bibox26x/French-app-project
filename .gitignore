@@ -12,7 +12,9 @@
 
 # testing
 /coverage
-
+/mobile-handoff
+mobile-handoff.zip
+generate_responses.js
 # next.js
 /.next/
 /out/

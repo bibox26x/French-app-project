@@ -65,7 +65,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/connexion"
   },
-  session: { strategy: "jwt" }
+  session: { strategy: "jwt" },
+  trustHost: true
 })
 
 export async function getAuthenticatedUser(request: NextRequest) {
