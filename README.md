@@ -1,6 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fête, en fait
 
-## Getting Started
+Plateforme de location de logements entre étudiants pour des événements et soirées.
+
+## Comptes de test par défaut
+
+Une fois la base de données initialisée via `npx prisma db seed`, vous pouvez utiliser les comptes de test suivants pour vous connecter et tester l'application :
+
+| Rôle | Email | Mot de passe | Description |
+|------|-------|--------------|-------------|
+| **Administrateur** | `admin@feteenfait.fr` | `admin123` | Accès au tableau de bord admin pour gérer la plateforme |
+| **Hôte** | `julie.martin@etu.univ-paris.fr` | `julie123` | Accès à l'espace hôte pour publier et gérer des annonces |
+| **Voyageur** | `lucas.dubois@etu.epita.fr` | `lucas123` | Compte étudiant vérifié standard pour chercher et réserver |
+
+---
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).## Getting Started
 
 First, run the development server:
 

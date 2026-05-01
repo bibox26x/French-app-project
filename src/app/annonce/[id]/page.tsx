@@ -161,26 +161,28 @@ export default async function ListingPage({ params }: { params: { id: string } }
                 )}
               </div>
 
-              <div className="border border-border rounded-xl mb-6 overflow-hidden">
-                <div className="flex border-b border-border">
-                  <div className="flex-1 p-3 border-r border-border">
-                    <label className="block text-[10px] uppercase font-bold text-ink mb-1">Arrivée</label>
-                    <div className="text-sm text-gray-500">Ajouter dates</div>
+              <form action={`/reserver/${listing.id}`} method="GET" className="mb-4">
+                <div className="border border-border rounded-xl mb-6 overflow-hidden focus-within:ring-2 focus-within:ring-coral/20">
+                  <div className="flex border-b border-border">
+                    <div className="flex-1 p-3 border-r border-border">
+                      <label htmlFor="startDate" className="block text-[10px] uppercase font-bold text-ink mb-1">Arrivée</label>
+                      <input type="date" id="startDate" name="startDate" required min={new Date().toISOString().split('T')[0]} className="w-full text-sm text-ink outline-none bg-transparent cursor-pointer" />
+                    </div>
+                    <div className="flex-1 p-3">
+                      <label htmlFor="endDate" className="block text-[10px] uppercase font-bold text-ink mb-1">Départ</label>
+                      <input type="date" id="endDate" name="endDate" required min={new Date().toISOString().split('T')[0]} className="w-full text-sm text-ink outline-none bg-transparent cursor-pointer" />
+                    </div>
                   </div>
-                  <div className="flex-1 p-3">
-                    <label className="block text-[10px] uppercase font-bold text-ink mb-1">Départ</label>
-                    <div className="text-sm text-gray-500">Ajouter dates</div>
+                  <div className="p-3">
+                    <label htmlFor="guests" className="block text-[10px] uppercase font-bold text-ink mb-1">Voyageurs</label>
+                    <input type="number" id="guests" name="guests" min="1" max={listing.maxGuests} defaultValue="1" required className="w-full text-sm text-ink outline-none bg-transparent" />
                   </div>
                 </div>
-                <div className="p-3">
-                  <label className="block text-[10px] uppercase font-bold text-ink mb-1">Voyageurs</label>
-                  <div className="text-sm text-ink font-medium">1 voyageur</div>
-                </div>
-              </div>
 
-              <Button size="lg" className="w-full bg-coral hover:bg-peach text-white text-base py-6 mb-4">
-                Réserver
-              </Button>
+                <Button type="submit" size="lg" className="w-full bg-coral hover:bg-peach text-white text-base py-6">
+                  Réserver
+                </Button>
+              </form>
               
               <p className="text-center text-sm text-gray-500 mb-6">
                 Aucun montant ne vous sera débité pour le moment

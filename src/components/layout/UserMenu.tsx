@@ -22,6 +22,8 @@ interface UserMenuProps {
     email?: string | null
     role: string
     isVerifiedStudent: boolean
+    firstName?: string | null
+    lastName?: string | null
   }
 }
 
@@ -36,34 +38,36 @@ export function UserMenu({ user }: UserMenuProps) {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none text-ink">{user.email}</p>
-            {user.isVerifiedStudent && (
-              <p className="text-xs leading-none text-blue-600 font-medium mt-1">Étudiant vérifié</p>
-            )}
-          </div>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none text-ink">{user.email}</p>
+              {user.isVerifiedStudent && (
+                <p className="text-xs leading-none text-blue-600 font-medium mt-1">Étudiant vérifié</p>
+              )}
+            </div>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem render={<Link href="/profil" className="cursor-pointer flex w-full items-center" />}>
+          <DropdownMenuItem render={<Link href="/profil" className="cursor-pointer flex w-full items-center" />} nativeButton={false}>
             <UserIcon className="mr-2 h-4 w-4 text-gray-500" />
             <span>Profil</span>
           </DropdownMenuItem>
-          <DropdownMenuItem render={<Link href="/reservations" className="cursor-pointer flex w-full items-center" />}>
+          <DropdownMenuItem render={<Link href="/reservations" className="cursor-pointer flex w-full items-center" />} nativeButton={false}>
             <CalendarDays className="mr-2 h-4 w-4 text-gray-500" />
             <span>Mes réservations</span>
           </DropdownMenuItem>
           
           {user.role === "host" && (
-            <DropdownMenuItem render={<Link href="/hote" className="cursor-pointer flex w-full items-center" />}>
+            <DropdownMenuItem render={<Link href="/hote" className="cursor-pointer flex w-full items-center" />} nativeButton={false}>
               <LayoutDashboard className="mr-2 h-4 w-4 text-coral" />
               <span className="text-coral font-medium">Espace Hôte</span>
             </DropdownMenuItem>
           )}
 
           {user.role === "admin" && (
-            <DropdownMenuItem render={<Link href="/admin" className="cursor-pointer flex w-full items-center" />}>
+            <DropdownMenuItem render={<Link href="/admin" className="cursor-pointer flex w-full items-center" />} nativeButton={false}>
               <LayoutDashboard className="mr-2 h-4 w-4 text-gray-700" />
               <span>Administration</span>
             </DropdownMenuItem>

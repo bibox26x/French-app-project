@@ -46,6 +46,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id
         token.role = user.role
         token.isVerifiedStudent = user.isVerifiedStudent
+        token.firstName = user.firstName
+        token.lastName = user.lastName
       }
       return token
     },
@@ -54,6 +56,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string
         session.user.role = token.role as string
         session.user.isVerifiedStudent = token.isVerifiedStudent as boolean
+        session.user.firstName = token.firstName as string | undefined
+        session.user.lastName = token.lastName as string | undefined
       }
       return session
     }
@@ -86,7 +90,9 @@ export async function getAuthenticatedUser(request: NextRequest) {
           id: decoded.id as string,
           email: decoded.email as string,
           role: decoded.role as string,
-          isVerifiedStudent: decoded.isVerifiedStudent as boolean
+          isVerifiedStudent: decoded.isVerifiedStudent as boolean,
+          firstName: decoded.firstName as string | undefined,
+          lastName: decoded.lastName as string | undefined
         }
       }
     } catch (e) {

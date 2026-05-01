@@ -56,27 +56,23 @@ function Button({
   children,
   ...props
 }: ButtonProps) {
-  // If asChild and children is a single React element, delegate rendering to it
-  const render = asChild && React.isValidElement(children)
-    ? (buttonProps: React.HTMLAttributes<HTMLElement>) => {
-        return React.cloneElement(children as React.ReactElement<any>, {
-          ...buttonProps,
-          className: cn(
-            buttonVariants({ variant, size, className }),
-            (children as React.ReactElement<any>).props.className
-          ),
-        })
-      }
-    : undefined
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children as React.ReactElement<any>, {
+      ...props,
+      className: cn(
+        buttonVariants({ variant, size, className }),
+        (children as React.ReactElement<any>).props.className
+      ),
+    })
+  }
 
   return (
     <ButtonPrimitive
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      render={render}
       {...props}
     >
-      {asChild ? null : children}
+      {children}
     </ButtonPrimitive>
   )
 }
