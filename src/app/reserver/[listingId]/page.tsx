@@ -121,7 +121,7 @@ export default async function RecapPage({
                   <span>{listing.pricePerNight} € × {nights} nuit{nights > 1 ? "s" : ""}</span>
                   <span>{subtotal} €</span>
                 </div>
-                {listing.depositAmount > 0 && (
+                {(listing.depositAmount ?? 0) > 0 && (
                   <div className="flex justify-between text-gray-700">
                     <span>Caution</span>
                     <span>{listing.depositAmount} €</span>

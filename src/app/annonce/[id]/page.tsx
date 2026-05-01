@@ -186,7 +186,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
                 Aucun montant ne vous sera débité pour le moment
               </p>
 
-              {listing.depositAmount > 0 && (
+              {(listing.depositAmount ?? 0) > 0 && (
                 <div className="flex justify-between items-center text-sm mb-4">
                   <span className="text-gray-600 underline decoration-dotted underline-offset-4">Caution</span>
                   <span className="text-ink">{listing.depositAmount} €</span>

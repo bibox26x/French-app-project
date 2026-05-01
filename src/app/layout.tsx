@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { SessionProvider } from "next-auth/react"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,11 +28,13 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${inter.variable} antialiased h-full`}>
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        <main className="flex-1 flex flex-col">
-          {children}
-        </main>
-        <Footer />
+        <SessionProvider>
+          <Navbar />
+          <main className="flex-1 flex flex-col">
+            {children}
+          </main>
+          <Footer />
+        </SessionProvider>
       </body>
     </html>
   );

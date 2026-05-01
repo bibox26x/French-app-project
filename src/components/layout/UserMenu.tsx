@@ -30,14 +30,12 @@ export function UserMenu({ user }: UserMenuProps) {
   
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 outline-none">
-          <Avatar className="h-8 w-8 border border-border hover:ring-2 hover:ring-coral/20 transition-all">
-            <AvatarFallback className="bg-coral-50 text-coral-700 text-xs font-medium">{initials}</AvatarFallback>
-          </Avatar>
-        </button>
+      <DropdownMenuTrigger render={<button className="flex items-center gap-2 outline-none" />}>
+        <Avatar className="h-8 w-8 border border-border hover:ring-2 hover:ring-coral/20 transition-all">
+          <AvatarFallback className="bg-coral-50 text-coral-700 text-xs font-medium">{initials}</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none text-ink">{user.email}</p>
@@ -48,34 +46,26 @@ export function UserMenu({ user }: UserMenuProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/profil" className="cursor-pointer flex w-full items-center">
-              <UserIcon className="mr-2 h-4 w-4 text-gray-500" />
-              <span>Profil</span>
-            </Link>
+          <DropdownMenuItem render={<Link href="/profil" className="cursor-pointer flex w-full items-center" />}>
+            <UserIcon className="mr-2 h-4 w-4 text-gray-500" />
+            <span>Profil</span>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/reservations" className="cursor-pointer flex w-full items-center">
-              <CalendarDays className="mr-2 h-4 w-4 text-gray-500" />
-              <span>Mes réservations</span>
-            </Link>
+          <DropdownMenuItem render={<Link href="/reservations" className="cursor-pointer flex w-full items-center" />}>
+            <CalendarDays className="mr-2 h-4 w-4 text-gray-500" />
+            <span>Mes réservations</span>
           </DropdownMenuItem>
           
           {user.role === "host" && (
-            <DropdownMenuItem asChild>
-              <Link href="/hote" className="cursor-pointer flex w-full items-center">
-                <LayoutDashboard className="mr-2 h-4 w-4 text-coral" />
-                <span className="text-coral font-medium">Espace Hôte</span>
-              </Link>
+            <DropdownMenuItem render={<Link href="/hote" className="cursor-pointer flex w-full items-center" />}>
+              <LayoutDashboard className="mr-2 h-4 w-4 text-coral" />
+              <span className="text-coral font-medium">Espace Hôte</span>
             </DropdownMenuItem>
           )}
 
           {user.role === "admin" && (
-            <DropdownMenuItem asChild>
-              <Link href="/admin" className="cursor-pointer flex w-full items-center">
-                <LayoutDashboard className="mr-2 h-4 w-4 text-gray-700" />
-                <span>Administration</span>
-              </Link>
+            <DropdownMenuItem render={<Link href="/admin" className="cursor-pointer flex w-full items-center" />}>
+              <LayoutDashboard className="mr-2 h-4 w-4 text-gray-700" />
+              <span>Administration</span>
             </DropdownMenuItem>
           )}
         </DropdownMenuGroup>

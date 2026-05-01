@@ -100,7 +100,7 @@ export default async function ReservationDetailPage({ params }: { params: { id: 
                 <span>Sous-total</span>
                 <span>{booking.totalPrice} €</span>
               </div>
-              {booking.depositAmount > 0 && (
+              {(booking.depositAmount ?? 0) > 0 && (
                 <div className="flex justify-between text-sm text-gray-600 mb-2">
                   <span>Caution</span>
                   <span>{booking.depositAmount} €</span>

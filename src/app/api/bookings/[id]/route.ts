@@ -4,7 +4,7 @@ import prisma from "@/lib/db"
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getAuthenticatedUser(request as any)
@@ -60,7 +60,7 @@ export async function PATCH(
       booking: {
         id: updated.id,
         status: updated.status,
-        updatedAt: updated.updatedAt.toISOString(),
+        createdAt: updated.createdAt.toISOString(),
       },
     })
   } catch (error) {
