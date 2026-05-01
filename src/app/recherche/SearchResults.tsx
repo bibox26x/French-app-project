@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Map as MapIcon, List, SlidersHorizontal } from "lucide-react"
 import { ListingCard } from "@/components/listings/ListingCard"
 import { Button } from "@/components/ui/button"
-import MapLibreMap, { Marker } from "react-map-gl"
+import MapLibreMap, { Marker } from "react-map-gl/maplibre"
 import "maplibre-gl/dist/maplibre-gl.css"
 
 interface SearchResultsProps {
