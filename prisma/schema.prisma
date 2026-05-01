@@ -1,0 +1,65 @@
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  passwordHash        String
+  firstName           String
+  lastName            String
+  phone               String?
+  role                String    @default("guest") // "guest" | "host" | "admin"
+  isVerifiedStudent   Boolean   @default(false)
+  university          String?   // free text, set during fake verification
+  createdAt           DateTime  @default(now())
+
+  listings            Listing[] @relation("HostListings")
+  bookingsAsGuest     Booking[] @relation("GuestBookings")
+}
+
+model Listing {
+  id              String    @id @default(cuid())
+  hostId          String
+  host            User      @relation("HostListings", fields: [hostId], references: [id])
+  title           String
+  description     String
+  propertyType    String    // "maison" | "appartement" | "villa" | "autre"
+  addressLine     String
+  city            String
+  latitude        Float
+  longitude       Float
+  maxGuests       Int
+  bedrooms        Int
+  pricePerNight   Float
+  weekendPrice    Float?    // optional Fri-Sun package
+  depositAmount   Float?    // optional caution
+  houseRules      String?
+  amenities       String    // JSON-encoded array of strings — SQLite has no native arrays
+  photos          String    // JSON-encoded array of URL strings
+  status          String    @default("published") // "draft" | "published" | "hidden_by_admin"
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  bookings        Booking[]
+}
+
+model Booking {
+  id              String    @id @default(cuid())
+  listingId       String
+  listing         Listing   @relation(fields: [listingId], references: [id])
+  guestId         String
+  guest           User      @relation("GuestBookings", fields: [guestId], references: [id])
+  startDate       DateTime
+  endDate         DateTime
+  guestCount      Int
+  totalPrice      Float
+  depositAmount   Float?
+  status          String    @default("pending") // "pending" | "confirmed" | "declined" | "cancelled" | "completed"
+  createdAt       DateTime  @default(now())
+}
