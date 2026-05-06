@@ -39,15 +39,8 @@ export function Footer() {
           
           <div>
             <h3 className="font-medium text-ink mb-3">Légal</h3>
-            <ul className="space-y-2 text-sm text-gray-500">
-              <li><span className="cursor-not-allowed">Mentions légales</span></li>
-              <li><span className="cursor-not-allowed">CGU</span></li>
-            </ul>
+            <p className="text-sm text-gray-500">© {new Date().getFullYear()} Fête, en fait — Projet pédagogique.</p>
           </div>
-        </div>
-        
-        <div className="mt-8 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} Fête, en fait. Projet étudiant.</p>
         </div>
       </div>
     </footer>

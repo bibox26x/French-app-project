@@ -105,29 +105,25 @@ export default async function ReservationsPage() {
           <EmptyState />
         ) : (
           <div className="space-y-10">
-            {/* À venir */}
-            <section>
-              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">À venir</h2>
-              {upcoming.length === 0 ? (
-                <p className="text-gray-400 text-sm italic">Aucune réservation à venir.</p>
-              ) : (
+            {/* À venir — only show if non-empty */}
+            {upcoming.length > 0 && (
+              <section>
+                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">À venir</h2>
                 <div className="space-y-4">
                   {upcoming.map((b) => <BookingCard key={b.id} booking={b} />)}
                 </div>
-              )}
-            </section>
+              </section>
+            )}
 
-            {/* Passées */}
-            <section>
-              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Passées</h2>
-              {past.length === 0 ? (
-                <p className="text-gray-400 text-sm italic">Aucune réservation passée.</p>
-              ) : (
+            {/* Passées — only show if non-empty */}
+            {past.length > 0 && (
+              <section>
+                <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Passées</h2>
                 <div className="space-y-4">
                   {past.map((b) => <BookingCard key={b.id} booking={b} />)}
                 </div>
-              )}
-            </section>
+              </section>
+            )}
 
             {/* Annulées */}
             {cancelled.length > 0 && (

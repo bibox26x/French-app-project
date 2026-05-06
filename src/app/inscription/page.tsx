@@ -170,7 +170,7 @@ export default function InscriptionPage() {
               />
               <label htmlFor="acceptCGU" className="text-sm text-gray-600">
                 J'accepte les{" "}
-                <span className="text-coral font-medium cursor-pointer hover:underline">
+                <span>
                   conditions générales d'utilisation
                 </span>
               </label>

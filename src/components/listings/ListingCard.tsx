@@ -27,7 +27,7 @@ export function ListingCard({ listing }: ListingCardProps) {
   const coverPhoto = photosArr[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
 
   return (
-    <Link href={`/annonce/${listing.id}`} className="group block">
+    <Link href={`/annonce/${listing.id}`} className="group block transition-shadow hover:shadow-lg rounded-xl">
       <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-gray-200 mb-3">
         <Image 
           src={coverPhoto} 

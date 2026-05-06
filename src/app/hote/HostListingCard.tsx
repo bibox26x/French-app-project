@@ -12,7 +12,7 @@ export function HostListingCard({ listing }: { listing: any }) {
   try { cover = JSON.parse(listing.photos)[0] || "" } catch {}
 
   return (
-    <div className="bg-white rounded-2xl border border-border overflow-hidden group">
+    <div className="bg-white rounded-2xl border border-border overflow-hidden group hover:shadow-lg transition-shadow">
       <div className="relative h-40">
         {cover ? (
           <Image src={cover} alt={listing.title} fill className="object-cover" sizes="400px" />
@@ -40,14 +40,11 @@ export function HostListingCard({ listing }: { listing: any }) {
                 <Eye className="w-4 h-4" /> Voir l'annonce
               </Link>
               <Link
-                href={`/hote/annonces/${listing.id}/modifier`}
+                href={`/hote/annonces/${listing.id}/editer`}
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
               >
                 <Pencil className="w-4 h-4" /> Modifier
               </Link>
-              <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                <Trash2 className="w-4 h-4" /> Supprimer
-              </button>
             </div>
           )}
         </div>

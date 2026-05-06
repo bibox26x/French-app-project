@@ -3,10 +3,10 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import prisma from "@/lib/db"
 import { Users, BedDouble, MapPin, Check, ShieldCheck, ChevronLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { BookingWidget } from "./BookingWidget"
+import { MapLocation } from "./MapLocation"
 
-export default async function ListingPage({ params }: { params: { id: string } }) {
-  // Need to await params in Next.js 15 before using
+export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params
   
   const listing = await prisma.listing.findUnique({
@@ -72,8 +72,8 @@ export default async function ListingPage({ params }: { params: { id: string } }
         </div>
 
         {/* PHOTOS */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 h-[300px] md:h-[400px] mb-10 rounded-xl overflow-hidden">
-          <div className="col-span-1 md:col-span-2 relative h-full">
+        <div className={`grid gap-2 h-[300px] md:h-[400px] mb-10 rounded-xl overflow-hidden ${secondaryPhotos.length > 0 ? "grid-cols-1 md:grid-cols-4" : "grid-cols-1"}`}>
+          <div className={`relative h-full ${secondaryPhotos.length > 0 ? "col-span-1 md:col-span-2" : "col-span-1"}`}>
             <Image src={coverPhoto} alt="Cover" fill className="object-cover" priority sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
           {secondaryPhotos.map((photo, i) => (
@@ -81,12 +81,6 @@ export default async function ListingPage({ params }: { params: { id: string } }
               <Image src={photo} alt={`Photo ${i+2}`} fill className="object-cover" sizes="25vw" />
             </div>
           ))}
-          {secondaryPhotos.length === 0 && (
-            <>
-              <div className="hidden md:block col-span-1 relative h-full bg-gray-200"></div>
-              <div className="hidden md:block col-span-1 relative h-full bg-gray-200"></div>
-            </>
-          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 relative">
@@ -138,68 +132,22 @@ export default async function ListingPage({ params }: { params: { id: string } }
               </div>
             </div>
             
-            {/* Map Placeholder */}
+            {/* Map */}
             <div className="pt-10 border-t border-border">
               <h2 className="text-xl font-semibold text-ink mb-4">Localisation</h2>
-              <p className="text-gray-500 mb-4">{listing.city}</p>
-              <div className="h-64 bg-gray-200 rounded-xl flex items-center justify-center">
-                <p className="text-gray-500">Carte (MapLibre) en cours d'intégration</p>
-              </div>
+              <MapLocation latitude={listing.latitude} longitude={listing.longitude} city={listing.city} />
             </div>
           </div>
 
           {/* WIDGET */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 border border-border rounded-2xl p-6 shadow-lg shadow-black/5 bg-white">
-              <div className="mb-6">
-                <span className="text-2xl font-semibold text-ink">{listing.pricePerNight} €</span>
-                <span className="text-gray-500 text-sm"> par nuit</span>
-                {listing.weekendPrice && (
-                  <p className="text-sm text-gray-500 mt-1">
-                    Ou <span className="font-medium text-ink">{listing.weekendPrice} €</span> le weekend complet
-                  </p>
-                )}
-              </div>
-
-              <form action={`/reserver/${listing.id}`} method="GET" className="mb-4">
-                <div className="border border-border rounded-xl mb-6 overflow-hidden focus-within:ring-2 focus-within:ring-coral/20">
-                  <div className="flex border-b border-border">
-                    <div className="flex-1 p-3 border-r border-border">
-                      <label htmlFor="startDate" className="block text-[10px] uppercase font-bold text-ink mb-1">Arrivée</label>
-                      <input type="date" id="startDate" name="startDate" required min={new Date().toISOString().split('T')[0]} className="w-full text-sm text-ink outline-none bg-transparent cursor-pointer" />
-                    </div>
-                    <div className="flex-1 p-3">
-                      <label htmlFor="endDate" className="block text-[10px] uppercase font-bold text-ink mb-1">Départ</label>
-                      <input type="date" id="endDate" name="endDate" required min={new Date().toISOString().split('T')[0]} className="w-full text-sm text-ink outline-none bg-transparent cursor-pointer" />
-                    </div>
-                  </div>
-                  <div className="p-3">
-                    <label htmlFor="guests" className="block text-[10px] uppercase font-bold text-ink mb-1">Voyageurs</label>
-                    <input type="number" id="guests" name="guests" min="1" max={listing.maxGuests} defaultValue="1" required className="w-full text-sm text-ink outline-none bg-transparent" />
-                  </div>
-                </div>
-
-                <Button type="submit" size="lg" className="w-full bg-coral hover:bg-peach text-white text-base py-6">
-                  Réserver
-                </Button>
-              </form>
-              
-              <p className="text-center text-sm text-gray-500 mb-6">
-                Aucun montant ne vous sera débité pour le moment
-              </p>
-
-              {(listing.depositAmount ?? 0) > 0 && (
-                <div className="flex justify-between items-center text-sm mb-4">
-                  <span className="text-gray-600 underline decoration-dotted underline-offset-4">Caution</span>
-                  <span className="text-ink">{listing.depositAmount} €</span>
-                </div>
-              )}
-
-              <div className="pt-4 border-t border-border flex justify-between items-center font-semibold text-lg text-ink">
-                <span>Total</span>
-                <span>— €</span>
-              </div>
-            </div>
+            <BookingWidget
+              listingId={listing.id}
+              pricePerNight={listing.pricePerNight}
+              weekendPrice={listing.weekendPrice}
+              depositAmount={listing.depositAmount}
+              maxGuests={listing.maxGuests}
+            />
           </div>
         </div>
       </div>

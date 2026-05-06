@@ -82,6 +82,10 @@ export default function PaiementPage() {
         </p>
 
         <div className="bg-white rounded-2xl border border-border p-8 shadow-sm">
+          <p className="text-center text-xs text-gray-400 mb-6 px-4">
+            Démo : aucun paiement réel n'est traité. Cette plateforme est un projet pédagogique.
+          </p>
+
           {error && (
             <div className="mb-6 bg-red-50 text-red-700 border border-red-200 rounded-xl px-4 py-3 text-sm font-medium">
               {error}
@@ -91,6 +95,21 @@ export default function PaiementPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="cardNumber" className="block text-sm font-medium text-ink mb-1.5">Numéro de carte</label>
+              {(() => {
+                const firstDigit = form.cardNumber.replace(/\s/g, "")[0]
+                let brand = ""
+                if (firstDigit === "4") brand = "Visa"
+                else if (firstDigit === "5") brand = "Mastercard"
+                else if (firstDigit === "3") brand = "Amex"
+                if (brand) {
+                  return (
+                    <span className="inline-block bg-gray-100 text-gray-600 text-xs font-medium px-2 py-0.5 rounded-full mb-2">
+                      {brand}
+                    </span>
+                  )
+                }
+                return null
+              })()}
               <input
                 id="cardNumber"
                 type="text"
@@ -149,8 +168,8 @@ export default function PaiementPage() {
             <Button
               type="submit"
               size="lg"
-              disabled={loading}
-              className="w-full bg-coral hover:bg-[#E63946] text-white mt-2 py-6 text-base"
+              disabled={loading || !form.cardNumber || !form.expiry || !form.cvc || !form.name}
+              className="w-full bg-coral hover:bg-[#E63946] text-white mt-2 py-6 text-base disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Traitement en cours…</>
@@ -160,10 +179,6 @@ export default function PaiementPage() {
             </Button>
           </form>
         </div>
-
-        <p className="text-center text-xs text-gray-400 mt-6 px-4">
-          Démo : aucun paiement réel n'est traité. Cette plateforme est un projet pédagogique.
-        </p>
       </div>
     </div>
   )

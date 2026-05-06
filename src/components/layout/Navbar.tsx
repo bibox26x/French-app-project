@@ -19,8 +19,8 @@ export async function Navbar() {
 
         <div className="flex flex-1 items-center justify-end gap-4 md:gap-6">
           <nav className="hidden items-center gap-4 text-sm font-medium md:flex text-gray-700">
-            <Link href="/recherche" className="hover:text-ink transition-colors">Rechercher</Link>
-            <Link href="/a-propos" className="hover:text-ink transition-colors">À propos</Link>
+            <Link href="/recherche" className="hover:text-ink transition-colors focus-visible:outline-none focus-visible:underline focus-visible:decoration-2 focus-visible:underline-offset-4 focus-visible:decoration-coral">Rechercher</Link>
+            <Link href="/a-propos" className="hover:text-ink transition-colors focus-visible:outline-none focus-visible:underline focus-visible:decoration-2 focus-visible:underline-offset-4 focus-visible:decoration-coral">À propos</Link>
           </nav>
 
           <div className="flex items-center gap-2">

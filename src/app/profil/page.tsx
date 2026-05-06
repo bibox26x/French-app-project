@@ -27,7 +27,7 @@ export default function ProfilPage() {
     setIsVerifying(true)
 
     // Simuler un délai de vérification
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 600))
 
     try {
       const res = await fetch("/api/users/me/verify", {
@@ -170,7 +170,7 @@ export default function ProfilPage() {
                     {isVerifying ? (
                       <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Traitement...</>
                     ) : (
-                      "Soumettre"
+                      "Soumettre la vérification"
                     )}
                   </Button>
                 </div>

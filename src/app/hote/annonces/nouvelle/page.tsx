@@ -58,10 +58,12 @@ export default function NouvellAnnoncePage() {
   })
 
   function update(field: keyof FormData, value: string | string[]) {
+    setError("")
     setForm((f) => ({ ...f, [field]: value }))
   }
 
   function toggleAmenity(amenity: string) {
+    setError("")
     setForm((f) => ({
       ...f,
       amenities: f.amenities.includes(amenity)
@@ -81,6 +83,29 @@ export default function NouvellAnnoncePage() {
     setForm((f) => ({ ...f, photos: f.photos.filter((_, i) => i !== idx) }))
   }
 
+  function validateStep(s: number): string | null {
+    if (s === 0) {
+      if (!form.title.trim()) return "Veuillez renseigner un titre."
+      if (!form.description.trim()) return "Veuillez renseigner une description."
+      return null
+    }
+    if (s === 1) {
+      if (!form.city.trim()) return "Veuillez renseigner la ville."
+      return null
+    }
+    if (s === 2) {
+      if (!form.maxGuests || parseInt(form.maxGuests) < 1) return "Le nombre de voyageurs doit être ≥ 1."
+      if (!form.bedrooms || parseInt(form.bedrooms) < 1) return "Le nombre de chambres doit être ≥ 1."
+      return null
+    }
+    if (s === 4) {
+      if (!form.pricePerNight) return "Veuillez renseigner le prix par nuit."
+      if (parseFloat(form.pricePerNight) <= 0) return "Le prix par nuit doit être supérieur à 0."
+      return null
+    }
+    return null
+  }
+
   async function geocode() {
     if (!form.addressLine || !form.city) return
     setGeocoding(true)
@@ -98,6 +123,14 @@ export default function NouvellAnnoncePage() {
 
   async function handleSubmit() {
     setError("")
+    for (let i = 0; i <= 4; i++) {
+      const msg = validateStep(i)
+      if (msg) {
+        setError(msg)
+        setStep(i)
+        return
+      }
+    }
     setLoading(true)
     try {
       const res = await fetch("/api/listings", {
@@ -322,7 +355,12 @@ export default function NouvellAnnoncePage() {
               <Button
                 type="button"
                 className="bg-coral hover:bg-[#E63946] text-white gap-1"
-                onClick={() => setStep((s) => s + 1)}
+                onClick={() => {
+                  const msg = validateStep(step)
+                  if (msg) { setError(msg); return }
+                  setError("")
+                  setStep((s) => s + 1)
+                }}
               >
                 Suivant <ChevronRight className="w-4 h-4" />
               </Button>

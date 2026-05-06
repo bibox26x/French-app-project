@@ -30,11 +30,12 @@ export default async function RecapPage({
   const startDate = resolvedSearch.startDate || ""
   const endDate = resolvedSearch.endDate || ""
   const guestCount = parseInt(resolvedSearch.guests || "1", 10)
+  const hasDates = !!(startDate && endDate)
 
-  // Calculate nights
-  let nights = 1
-  let subtotal = listing.pricePerNight
-  if (startDate && endDate) {
+  // Calculate nights only when both dates present
+  let nights = 0
+  let subtotal = 0
+  if (hasDates) {
     const s = new Date(startDate)
     const e = new Date(endDate)
     nights = Math.max(1, Math.round((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24)))
@@ -61,6 +62,12 @@ export default async function RecapPage({
         </Link>
 
         <h1 className="text-3xl font-semibold text-ink mb-8">Récapitulatif de votre réservation</h1>
+
+        {!hasDates && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 mb-8 text-amber-800 text-sm font-medium">
+            Sélectionnez vos dates sur la page de l'annonce pour continuer.
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* LEFT */}
@@ -116,35 +123,51 @@ export default async function RecapPage({
             <div className="bg-white rounded-2xl border border-border p-6 sticky top-24">
               <h3 className="font-semibold text-ink text-lg mb-6">Récapitulatif de prix</h3>
 
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-gray-700">
-                  <span>{listing.pricePerNight} € × {nights} nuit{nights > 1 ? "s" : ""}</span>
-                  <span>{subtotal} €</span>
-                </div>
-                {(listing.depositAmount ?? 0) > 0 && (
-                  <div className="flex justify-between text-gray-700">
-                    <span>Caution</span>
-                    <span>{listing.depositAmount} €</span>
+              {hasDates ? (
+                <>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between text-gray-700">
+                      <span>{listing.pricePerNight} € × {nights} nuit{nights > 1 ? "s" : ""}</span>
+                      <span>{subtotal} €</span>
+                    </div>
+                    {(listing.depositAmount ?? 0) > 0 && (
+                      <div className="flex justify-between text-gray-700">
+                        <span>Caution</span>
+                        <span>{listing.depositAmount} €</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              <div className="mt-6 pt-6 border-t border-border flex justify-between font-semibold text-lg text-ink">
-                <span>Total</span>
-                <span>{total} €</span>
-              </div>
+                  <div className="mt-6 pt-6 border-t border-border flex justify-between font-semibold text-lg text-ink">
+                    <span>Total</span>
+                    <span>{total} €</span>
+                  </div>
+                </>
+              ) : (
+                <p className="text-gray-400 italic text-sm">Sélectionnez vos dates pour voir le prix.</p>
+              )}
 
-              <Button
-                size="lg"
-                className="w-full bg-coral hover:bg-[#E63946] text-white mt-6"
-                asChild
-              >
-                <Link
-                  href={`/reserver/${listing.id}/paiement?${searchStr}&total=${total}&nights=${nights}`}
+              {hasDates ? (
+                <Button
+                  size="lg"
+                  className="w-full bg-coral hover:bg-[#E63946] text-white mt-6"
+                  asChild
+                >
+                  <Link
+                    href={`/reserver/${listing.id}/paiement?${searchStr}&total=${total}&nights=${nights}`}
+                  >
+                    Continuer vers le paiement
+                  </Link>
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  disabled
+                  className="w-full bg-gray-300 text-gray-500 mt-6 cursor-not-allowed"
                 >
                   Continuer vers le paiement
-                </Link>
-              </Button>
+                </Button>
+              )}
             </div>
           </div>
         </div>

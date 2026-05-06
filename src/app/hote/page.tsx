@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/db"
-import { Plus, LayoutDashboard } from "lucide-react"
+import { Plus, LayoutDashboard, Home, Clock, Calendar, Wallet } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HostListingCard } from "./HostListingCard"
 import { PendingBookingRow } from "./PendingBookingRow"
@@ -51,10 +51,10 @@ export default async function HotePage() {
   })
 
   const stats = [
-    { label: "Annonces actives", value: listings.filter((l) => l.status === "published").length },
-    { label: "Réservations en attente", value: pendingBookings.length },
-    { label: "Réservations ce mois", value: monthBookings },
-    { label: "Revenus simulés ce mois", value: `${monthRevenue._sum.totalPrice ?? 0} €` },
+    { label: "Annonces actives", value: listings.filter((l) => l.status === "published").length, icon: Home },
+    { label: "Réservations en attente", value: pendingBookings.length, icon: Clock },
+    { label: "Réservations ce mois", value: monthBookings, icon: Calendar },
+    { label: "Revenus du mois (simulés)", value: `${monthRevenue._sum.totalPrice ?? 0} €`, icon: Wallet },
   ]
 
   return (
@@ -77,12 +77,16 @@ export default async function HotePage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          {stats.map((stat) => (
-            <div key={stat.label} className="bg-white rounded-2xl border border-border p-6 text-center">
-              <p className="text-2xl font-bold text-ink mb-1">{stat.value}</p>
-              <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
-            </div>
-          ))}
+          {stats.map((stat) => {
+            const Icon = stat.icon
+            return (
+              <div key={stat.label} className="bg-white rounded-2xl border border-border p-6 text-center">
+                <Icon className="w-5 h-5 text-coral mx-auto mb-2" />
+                <p className="text-2xl font-bold text-ink mb-1">{stat.value}</p>
+                <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
+              </div>
+            )
+          })}
         </div>
 
         {/* Pending bookings */}

@@ -16,6 +16,8 @@
 mobile-handoff.zip
 generate_responses.js
 test_booking.js
+/pitch-materials
+pitch-web.zip
 # next.js
 /.next/
 /out/

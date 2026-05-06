@@ -5,6 +5,7 @@ import prisma from "@/lib/db"
 import { Button } from "@/components/ui/button"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
+import { CopyReference } from "./CopyReference"
 
 export default async function ConfirmationPage({
   params,
@@ -74,9 +75,8 @@ export default async function ConfirmationPage({
         </div>
 
         {/* Reference */}
-        <div className="bg-gray-50 border border-border rounded-xl px-6 py-4 text-center mb-8">
-          <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Numéro de réservation</p>
-          <p className="text-2xl font-bold text-ink tracking-widest font-mono">{ref}</p>
+        <div className="mb-8">
+          <CopyReference bookingRef={ref} />
         </div>
 
         {/* Actions */}

@@ -18,7 +18,7 @@ export default async function HomePage() {
         <div className="container mx-auto max-w-5xl relative z-10 text-center">
           <div className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full text-sm font-medium text-blue-600 shadow-sm mb-6 border border-blue-100">
             <ShieldCheck className="w-4 h-4" />
-            Réservé aux étudiants vérifiés
+            Pensé pour les étudiants
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-ink tracking-tight mb-6 max-w-4xl mx-auto leading-tight">
@@ -29,39 +29,37 @@ export default async function HomePage() {
             Des hôtes qui acceptent les groupes étudiants. Sans règles absurdes, sans frais cachés.
           </p>
           
-          {/* FAKE SEARCH BAR FOR HERO */}
-          <div className="bg-white rounded-2xl shadow-lg p-2 max-w-3xl mx-auto border border-gray-200 flex flex-col md:flex-row items-center gap-2">
+          {/* SEARCH BAR */}
+          <form action="/recherche" method="GET" className="bg-white rounded-2xl shadow-lg p-2 max-w-3xl mx-auto border border-gray-200 flex flex-col md:flex-row items-center gap-2">
             <div className="flex-1 flex items-center w-full px-4 py-2 border-b md:border-b-0 md:border-r border-gray-200">
               <Map className="w-5 h-5 text-gray-500 mr-3 shrink-0" />
               <div className="text-left w-full">
                 <p className="text-xs font-semibold text-ink uppercase tracking-wider">Ville</p>
-                <input type="text" placeholder="Où allez-vous ?" className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-gray-500" />
+                <input type="text" name="city" placeholder="Où allez-vous ?" className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-gray-500" />
               </div>
             </div>
-            
+
             <div className="flex-1 flex items-center w-full px-4 py-2 border-b md:border-b-0 md:border-r border-gray-200">
               <Calendar className="w-5 h-5 text-gray-500 mr-3 shrink-0" />
               <div className="text-left w-full">
                 <p className="text-xs font-semibold text-ink uppercase tracking-wider">Dates</p>
-                <input type="text" placeholder="Quand ?" className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-gray-500" />
+                <input type="text" name="dates" placeholder="Quand ?" className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-gray-500" />
               </div>
             </div>
-            
+
             <div className="flex-1 flex items-center w-full px-4 py-2">
               <Users className="w-5 h-5 text-gray-500 mr-3 shrink-0" />
               <div className="text-left w-full">
                 <p className="text-xs font-semibold text-ink uppercase tracking-wider">Voyageurs</p>
-                <input type="number" placeholder="Combien ?" min="1" className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-gray-500" />
+                <input type="number" name="guests" placeholder="Combien ?" min="1" className="w-full bg-transparent text-sm outline-none text-ink placeholder:text-gray-500" />
               </div>
             </div>
-            
-            <Button size="lg" className="w-full md:w-auto h-14 px-8 rounded-xl bg-coral hover:bg-peach text-white text-base" asChild>
-              <Link href="/recherche">
-                <Search className="w-5 h-5 mr-2" />
-                Rechercher
-              </Link>
+
+            <Button type="submit" size="lg" className="w-full md:w-auto h-14 px-8 rounded-xl bg-coral hover:bg-peach text-white text-base">
+              <Search className="w-5 h-5 mr-2" />
+              Rechercher
             </Button>
-          </div>
+          </form>
         </div>
       </section>
 
