@@ -1,50 +1,148 @@
-# Fête, en fait
+# Fête, en fait — Web
 
 Plateforme de location de logements entre étudiants pour des événements et soirées.
 
-## Comptes de test par défaut
-
-Une fois la base de données initialisée via `npx prisma db seed`, vous pouvez utiliser les comptes de test suivants pour vous connecter et tester l'application :
-
-| Rôle | Email | Mot de passe | Description |
-|------|-------|--------------|-------------|
-| **Administrateur** | `admin@feteenfait.fr` | `admin123` | Accès au tableau de bord admin pour gérer la plateforme |
-| **Hôte** | `julie.martin@etu.univ-paris.fr` | `julie123` | Accès à l'espace hôte pour publier et gérer des annonces |
-| **Voyageur** | `lucas.dubois@etu.epita.fr` | `lucas123` | Compte étudiant vérifié standard pour chercher et réserver |
+> **Tagline :** *La plateforme de location pour vos événements entre étudiants.*
 
 ---
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).## Getting Started
+## Stack technique
 
-First, run the development server:
+| Couche | Choix |
+|---|---|
+| Framework | **Next.js 16** (App Router) |
+| Langage | **TypeScript** strict |
+| Base de données | **SQLite** via **Prisma 7** + `better-sqlite3` |
+| Authentification | **NextAuth v5** (Credentials provider + JWT) |
+| UI | **Tailwind CSS v4** + **shadcn/ui** (Base UI primitives) |
+| Cartes | **MapLibre GL** via **react-map-gl** |
+| Icônes | **lucide-react** |
+| Formulaires | **react-hook-form** + **Zod** |
+
+---
+
+## Démarrage
+
+### Prérequis
+
+- Node.js ≥ 18
+- npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Base de données
+
+```bash
+# Créer la base et appliquer les migrations
+npx prisma db push
+
+# Peupler avec les données de test
+npx prisma db seed
+```
+
+### Serveur de développement
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Comptes de test
 
-## Learn More
+Une fois la base initialisée, ces comptes sont disponibles :
 
-To learn more about Next.js, take a look at the following resources:
+| Rôle | Email | Mot de passe |
+|---|---|---|
+| **Admin** | `admin@feteenfait.fr` | `admin123` |
+| **Hôte** | `julie.martin@etu.univ-paris.fr` | `julie123` |
+| **Voyageur** | `lucas.dubois@etu.epita.fr` | `lucas123` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Structure du projet
 
-## Deploy on Vercel
+```
+web/
+├── prisma/
+│   ├── schema.prisma          # Modèle de données (User, Listing, Booking)
+│   ├── seed.ts                # Peuplement des données de test
+│   └── migrations/            # Migrations SQLite
+├── src/
+│   ├── app/                   # Routes Next.js App Router
+│   │   ├── layout.tsx         # Layout racine (Navbar, Footer, SessionProvider)
+│   │   ├── page.tsx           # Page d'accueil
+│   │   ├── connexion/         # Connexion
+│   │   ├── inscription/       # Inscription
+│   │   ├── recherche/         # Recherche de logements
+│   │   ├── annonce/[id]/      # Détail d'une annonce
+│   │   ├── reserver/[id]/     # Flux de réservation
+│   │   ├── reservation/[id]/  # Détail d'une réservation
+│   │   ├── reservations/      # Mes réservations
+│   │   ├── profil/            # Profil utilisateur
+│   │   ├── hote/              # Espace hôte
+│   │   ├── admin/             # Tableau de bord admin
+│   │   ├── a-propos/          # À propos
+│   │   └── api/               # Routes API REST
+│   ├── components/
+│   │   ├── layout/            # Navbar, Footer, UserMenu
+│   │   ├── listings/          # ListingCard
+│   │   └── ui/                # Composants shadcn (button, input, avatar, dropdown)
+│   ├── lib/
+│   │   ├── auth.ts            # Configuration NextAuth
+│   │   ├── db.ts               # Client Prisma singleton
+│   │   └── utils.ts           # Utilitaire cn()
+│   └── types/                 # Types TypeScript globaux
+├── public/                    # Assets statiques
+├── next.config.ts             # Configuration Next.js
+├── tailwind.config.js         # Configuration Tailwind CSS v4
+└── package.json
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Rôles utilisateurs
+
+| Rôle | Permissions |
+|---|---|
+| **Voyageur** (guest) | Rechercher, voir les annonces, réserver, voir/annuler ses réservations |
+| **Hôte** (host) | Créer/modifier/supprimer des annonces, confirmer/refuser les demandes |
+| **Admin** | Gérer utilisateurs, annonces (masquer/afficher), voir les statistiques |
+
+---
+
+## API
+
+Les routes API sont documentées dans [`API.md`](./API.md).
+
+Endpoints principaux :
+- `POST /api/auth/token` — Connexion (JWT)
+- `POST /api/auth/register` — Inscription
+- `GET /api/listings` — Liste des annonces
+- `GET /api/listings/[id]` — Détail d'une annonce
+- `POST /api/bookings` — Créer une réservation
+- `PATCH /api/bookings/[id]` — Modifier le statut
+- `POST /api/users/me/verify` — Vérification étudiante
+
+---
+
+## Scripts
+
+| Commande | Description |
+|---|---|
+| `npm run dev` | Lancer le serveur de développement |
+| `npm run build` | Build de production |
+| `npm start` | Démarrer en production |
+| `npm run lint` | ESLint |
+
+---
+
+## Application mobile
+
+L'application mobile Expo (React Native) se trouve dans [`../mobile/`](../mobile/). Elle consomme la même API.
