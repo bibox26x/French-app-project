@@ -61,6 +61,12 @@ async function main() {
     },
   })
 
+  // Clean existing listings and bookings before removing any legacy users.
+  // SQLite enforces foreign keys strictly, so users referenced by rows in
+  // Booking or Listing must be removed only after those dependents are gone.
+  await prisma.booking.deleteMany({})
+  await prisma.listing.deleteMany({})
+
   // HOST: Père de Walid — the unbothered father with a real estate portfolio.
   // Renamed from Julie. Email kept gmail-style since he's not a student.
   // Old Julie record (if it exists from a prior seed) is removed first so the
@@ -96,10 +102,6 @@ async function main() {
       phone: '0698765432',
     },
   })
-
-  // Clean existing listings and bookings to avoid duplicates during re-seeding
-  await prisma.booking.deleteMany({})
-  await prisma.listing.deleteMany({})
 
   // 22 listings across 12 French cities, all owned by Père de Walid.
   // Cities: Paris, Lyon, Marseille, Bordeaux, Lille, Nice, Toulouse,

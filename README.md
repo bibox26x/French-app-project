@@ -61,7 +61,7 @@ Une fois la base initialisée, ces comptes sont disponibles :
 | Rôle | Email | Mot de passe |
 |---|---|---|
 | **Admin** | `admin@feteenfait.fr` | `admin123` |
-| **Hôte** | `julie.martin@etu.univ-paris.fr` | `julie123` |
+| **Hôte** | `pere.walid@gmail.com` | `walid123` |
 | **Voyageur** | `lucas.dubois@etu.epita.fr` | `lucas123` |
 
 ---
