@@ -30,6 +30,11 @@ interface UserMenuProps {
 export function UserMenu({ user }: UserMenuProps) {
   const initials = user.email?.substring(0, 2).toUpperCase() || "U"
   
+  const handleSignOut = () => {
+    const callbackUrl = process.env.NEXT_PUBLIC_APP_URL ?? window.location.origin
+    void signOut({ callbackUrl })
+  }
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger render={<button className="flex items-center gap-2 outline-none" />}>
@@ -76,7 +81,7 @@ export function UserMenu({ user }: UserMenuProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem 
           className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive"
-          onClick={() => signOut({ callbackUrl: "/" })}
+          onClick={handleSignOut}
         >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Déconnexion</span>
